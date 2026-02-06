@@ -273,11 +273,11 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .modal-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   color: #111;
 }
@@ -299,7 +299,7 @@ body {
 .user-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .form-group {
