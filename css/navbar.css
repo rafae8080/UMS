@@ -1,0 +1,106 @@
+/* ===== NAVBAR STYLES ===== */
+
+/* Navbar Container */
+.navbar {
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo/Brand Section (optional) */
+.navbar-brand {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111;
+}
+
+/* Right Side - User Section */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-email {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.user-role {
+  font-size: 12px;
+  color: #666;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #d1d5db;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.user-avatar:hover {
+  background-color: #9ca3af;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.logout-btn:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .navbar-content {
+    padding: 12px 16px;
+  }
+
+  .user-email {
+    font-size: 13px;
+  }
+
+  .user-role {
+    font-size: 11px;
+  }
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logout-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
