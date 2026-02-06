@@ -46,54 +46,6 @@ body {
   padding: 20px;
 }
 
-/* ===== HEADER ===== */
-.header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 30px;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.user-email {
-  font-size: 14px;
-  color: #333;
-  font-weight: 500;
-}
-
-.user-role {
-  font-size: 12px;
-  color: #666;
-}
-
-.user-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #d1d5db;
-}
-
-.logout-btn {
-  padding: 8px 16px;
-  background-color: white;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #333;
-  transition: background-color 0.2s;
-}
-
-.logout-btn:hover {
-  background-color: #f9fafb;
-}
-
 /* ===== MAIN CONTENT ===== */
 .main-content {
   background-color: white;
