@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-TELLY - Login</title>
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+    <!-- Background with overlay -->
+    <div class="background-image"></div>
+    <div class="background-overlay"></div>
+
+    <!-- Main Container -->
+    <div class="login-container">
+      <!-- Left Side - Login Form -->
+      <div class="login-form-section">
+        <form id="loginForm" class="login-form">
+          <h1 class="form-title">Login</h1>
+          <p class="form-subtitle">Use your account credentials</p>
+
+          <!-- Email Input -->
+          <div class="input-group">
+            <input
+              type="email"
+              id="email"
+              class="form-input"
+              placeholder="Email"
+              required
+            />
+          </div>
+
+          <!-- Password Input with Toggle -->
+          <div class="input-group password-group">
+            <input
+              type="password"
+              id="password"
+              class="form-input"
+              placeholder="Password"
+              required
+            />
+            <button type="button" class="toggle-password" id="togglePassword">
+              <!-- Eye Icon (Show) -->
+              <svg
+                class="eye-icon show-icon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <!-- Eye Off Icon (Hide) -->
+              <svg
+                class="eye-icon hide-icon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                style="display: none"
+              >
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                ></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Error Message -->
+          <div id="errorMessage" class="error-message"></div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <span class="btn-text">Sign In</span>
+            <svg
+              class="spinner"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="4"
+            >
+              <circle class="opacity-25" cx="12" cy="12" r="10"></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <span class="loading-text">Signing In...</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Right Side - Branding -->
+      <div class="branding-section">
+        <div class="logo-placeholder">
+          <!-- Placeholder for logo -->
+          <div class="logo-circle">
+            <span class="logo-text">ET</span>
+          </div>
+        </div>
+        <h1 class="brand-title">E-TELLY</h1>
+        <p class="brand-description">
+          Disaster preparedness and community resource sharing
+        </p>
+      </div>
+    </div>
+
+    <script src="js/login.js"></script>
+  </body>
+</html>
