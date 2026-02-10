@@ -23,7 +23,7 @@ Open: `http://localhost/UMS/login.html`
 
 ### Default Admin Login
 - **Email:** admin@example.com
-- **Password:** admin123
+- **Password:** password
 
 ### User Roles
 | Role | Access |
