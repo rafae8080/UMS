@@ -2,6 +2,10 @@
 let isEditMode = false;
 let currentUserId = null;
 let currentActionMenu = null;
+let usersData = [];
+
+// ===== API BASE URL =====
+const API_BASE = "api/users";
 
 // ===== DOM ELEMENTS =====
 const elements = {
@@ -186,13 +190,219 @@ function showAlert(message, type = "success") {
   }, 3000);
 }
 
+// ===== API FUNCTIONS =====
+
+/**
+ * Fetches all users from the backend
+ */
+async function fetchUsers() {
+  try {
+    const response = await fetch(`${API_BASE}/get_users.php`);
+    const data = await response.json();
+
+    if (data.success) {
+      usersData = data.users;
+      renderUsersTable(usersData);
+    } else {
+      if (response.status === 401) {
+        window.location.href = "login.html";
+        return;
+      }
+      showAlert(data.message || "Failed to load users", "error");
+    }
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    showAlert("Failed to load users", "error");
+  }
+}
+
+/**
+ * Creates a new user
+ * @param {Object} userData - User data to create
+ */
+async function createUser(userData) {
+  try {
+    const response = await fetch(`${API_BASE}/create_user.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: userData.email,
+        first_name: userData.firstName,
+        last_name: userData.lastName,
+        role: userData.role,
+        password: userData.password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showAlert("User created successfully!");
+      fetchUsers();
+      return true;
+    } else {
+      showAlert(data.message || "Failed to create user", "error");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error creating user:", error);
+    showAlert("Failed to create user", "error");
+    return false;
+  }
+}
+
+/**
+ * Updates an existing user
+ * @param {number} userId - User ID to update
+ * @param {Object} userData - User data to update
+ */
+async function updateUser(userId, userData) {
+  try {
+    const response = await fetch(`${API_BASE}/update_user.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: userId,
+        first_name: userData.firstName,
+        last_name: userData.lastName,
+        role: userData.role,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showAlert("User updated successfully!");
+      fetchUsers();
+      return true;
+    } else {
+      showAlert(data.message || "Failed to update user", "error");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error updating user:", error);
+    showAlert("Failed to update user", "error");
+    return false;
+  }
+}
+
+/**
+ * Deletes a user
+ * @param {number} userId - User ID to delete
+ */
+async function deleteUser(userId) {
+  try {
+    const response = await fetch(`${API_BASE}/delete_user.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: userId }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showAlert("User deleted successfully!");
+      fetchUsers();
+      return true;
+    } else {
+      showAlert(data.message || "Failed to delete user", "error");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    showAlert("Failed to delete user", "error");
+    return false;
+  }
+}
+
+/**
+ * Resets a user's password
+ * @param {number} userId - User ID to reset password for
+ */
+async function resetPassword(userId) {
+  try {
+    const response = await fetch(`${API_BASE}/reset_password.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: userId }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // Copy the new password to clipboard
+      await navigator.clipboard.writeText(data.new_password);
+      showAlert(`Password reset! New password copied to clipboard: ${data.new_password}`);
+      return true;
+    } else {
+      showAlert(data.message || "Failed to reset password", "error");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    showAlert("Failed to reset password", "error");
+    return false;
+  }
+}
+
+/**
+ * Renders the users table with the given data
+ * @param {Array} users - Array of user objects
+ */
+function renderUsersTable(users) {
+  elements.usersTableBody.innerHTML = "";
+
+  if (users.length === 0) {
+    elements.usersTableBody.innerHTML = `
+      <tr id="noUsersRow">
+        <td colspan="5" style="text-align: center; color: #6b7280; padding: 40px;">
+          No users found
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  users.forEach((user) => {
+    const roleDisplay = user.role === "admin" ? "Admin" : "Barangay";
+    const row = document.createElement("tr");
+    row.dataset.userId = user.id;
+    row.innerHTML = `
+      <td>${escapeHtml(user.email)}</td>
+      <td>${escapeHtml(user.first_name)}</td>
+      <td>${escapeHtml(user.last_name)}</td>
+      <td>${roleDisplay}</td>
+      <td>
+        <div class="action-menu-container">
+          <button class="action-btn">⋮</button>
+          <div class="action-menu">
+            <button class="action-item edit-btn">Edit</button>
+            <button class="action-item delete-btn">Delete</button>
+          </div>
+        </div>
+      </td>
+    `;
+    elements.usersTableBody.appendChild(row);
+  });
+}
+
+/**
+ * Escapes HTML to prevent XSS
+ * @param {string} text - Text to escape
+ */
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 // ===== FORM SUBMISSION =====
 
 /**
  * Handles form submission
  * @param {Event} e - Form submit event
  */
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
   e.preventDefault();
 
   // Get form data
@@ -225,24 +435,22 @@ function handleFormSubmit(e) {
     return;
   }
 
+  // Disable submit button
+  elements.submitBtn.disabled = true;
+
   // Submit to backend
+  let success;
   if (isEditMode) {
-    // UPDATE USER - Backend should implement this
-    console.log("Update user:", { id: currentUserId, ...formData });
-    // Example backend call:
-    // updateUser(currentUserId, formData);
-
-    showAlert("User updated successfully!");
+    success = await updateUser(currentUserId, formData);
   } else {
-    // CREATE USER - Backend should implement this
-    console.log("Create user:", formData);
-    // Example backend call:
-    // createUser(formData);
-
-    showAlert("User created successfully!");
+    success = await createUser(formData);
   }
 
-  closeModal();
+  elements.submitBtn.disabled = false;
+
+  if (success) {
+    closeModal();
+  }
 }
 
 // ===== ACTION MENU =====
@@ -271,14 +479,20 @@ function toggleActionMenu(button) {
 function handleEditUser(button) {
   // Get user data from the row
   const row = button.closest("tr");
-  const cells = row.querySelectorAll("td");
+  const userId = row.dataset.userId;
+  const user = usersData.find((u) => u.id == userId);
+
+  if (!user) {
+    showAlert("User not found", "error");
+    return;
+  }
 
   const userData = {
-    id: row.dataset.userId, // Backend should add this
-    email: cells[0].textContent,
-    firstName: cells[1].textContent,
-    lastName: cells[2].textContent,
-    role: cells[3].textContent.toLowerCase().replace(" ", "_"),
+    id: user.id,
+    email: user.email,
+    firstName: user.first_name,
+    lastName: user.last_name,
+    role: user.role,
   };
 
   openEditModal(userData);
@@ -310,36 +524,33 @@ function handleDeleteUser(button) {
 /**
  * Confirms and executes user deletion
  */
-function confirmDelete() {
+async function confirmDelete() {
   if (!currentUserId) {
     showAlert("No user selected", "error");
     return;
   }
 
-  // DELETE USER - Backend should implement this
-  console.log("Delete user:", currentUserId);
-  // Example backend call:
-  // deleteUser(currentUserId);
+  elements.confirmDeleteBtn.disabled = true;
+  const success = await deleteUser(currentUserId);
+  elements.confirmDeleteBtn.disabled = false;
 
-  showAlert("User deleted successfully!");
-  closeDeleteModal();
+  if (success) {
+    closeDeleteModal();
+  }
 }
 
 /**
  * Handles reset password action
  */
-function handleResetPassword() {
+async function handleResetPassword() {
   if (!currentUserId) {
     showAlert("No user selected", "error");
     return;
   }
 
-  // RESET PASSWORD - Backend should implement this
-  console.log("Reset password for user:", currentUserId);
-  // Example backend call:
-  // resetUserPassword(currentUserId);
-
-  showAlert("Password reset email sent!");
+  elements.resetPasswordBtn.disabled = true;
+  await resetPassword(currentUserId);
+  elements.resetPasswordBtn.disabled = false;
 }
 
 // ===== SEARCH FUNCTIONALITY =====
@@ -443,3 +654,16 @@ elements.usersTableBody.addEventListener("click", (e) => {
     handleDeleteUser(e.target);
   }
 });
+
+// ===== INITIALIZATION =====
+// Check if user is admin before loading the page
+async function initPage() {
+  const user = await loadUserInfo({ requireAdmin: true });
+  if (user) {
+    // User is admin, fetch users
+    fetchUsers();
+  }
+  // If not admin, loadUserInfo will redirect to dashboard.html
+}
+
+initPage();

@@ -1,0 +1,32 @@
+# UMS - User Management System
+
+## Setup Instructions
+
+### Requirements
+- XAMPP (Apache + MySQL)
+
+### Step 1: Copy Files
+Copy the entire `UMS` folder to:
+```
+c:\xampp\htdocs\UMS
+```
+
+### Step 2: Import Database
+1. Start XAMPP (Apache + MySQL)
+2. Open `http://localhost/phpmyadmin`
+3. Click **Import** tab
+4. Choose file: `UMS/database/ums.sql`
+5. Click **Go**
+
+### Step 3: Access the System
+Open: `http://localhost/UMS/login.html`
+
+### Default Admin Login
+- **Email:** admin@example.com
+- **Password:** admin123
+
+### User Roles
+| Role | Access |
+|------|--------|
+| Admin | Dashboard + User Management |
+| Barangay Official | Dashboard only |

@@ -101,25 +101,31 @@ async function handleLogin(e) {
   // Show loading state
   showLoading();
 
-  // Simulate API call (replace this with your actual backend call)
-  setTimeout(() => {
-    // For demo purposes, we'll check against dummy credentials
-    // TODO: Replace with actual authentication logic
+  try {
+    const response = await fetch("api/login.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-    const validEmail = "admin@example.com";
-    const validPassword = "123";
+    const data = await response.json();
 
-    if (email === validEmail && password === validPassword) {
-      // Success - redirect to dashboard
+    if (data.success) {
+      // Success - redirect to dashboard for all users
       console.log("Login successful!");
-      window.location.href = "ums.html";
-      hideLoading();
+      window.location.href = "dashboard.html";
     } else {
       // Error - invalid credentials
       hideLoading();
-      showError("Incorrect username or password");
+      showError(data.message || "Incorrect username or password");
     }
-  }, 1500); // Simulated delay
+  } catch (error) {
+    hideLoading();
+    showError("An error occurred. Please try again.");
+    console.error("Login error:", error);
+  }
 }
 
 // ===== EVENT LISTENERS =====

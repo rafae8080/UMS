@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - E-TELLY</title>
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      .dashboard-content {
+        padding: 40px;
+        text-align: center;
+      }
+      
+      .welcome-section {
+        margin-bottom: 40px;
+      }
+      
+      .welcome-title {
+        font-size: 32px;
+        font-weight: 600;
+        color: #111;
+        margin-bottom: 8px;
+      }
+      
+      .welcome-subtitle {
+        font-size: 16px;
+        color: #6b7280;
+      }
+      
+      .dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      
+      .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        padding: 32px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      
+      .dashboard-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      .card-icon {
+        width: 60px;
+        height: 60px;
+        background: #fee2e2;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        font-size: 28px;
+      }
+      
+      .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #111;
+        margin-bottom: 8px;
+      }
+      
+      .card-description {
+        font-size: 14px;
+        color: #6b7280;
+        line-height: 1.5;
+      }
+
+      .card-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="navbar-content">
+        <div class="navbar-brand">E-TELLY</div>
+        <div class="navbar-right">
+          <div class="user-info">
+            <span class="user-email">Loading...</span>
+            <span class="user-role">Loading...</span>
+          </div>
+          <div class="user-avatar"></div>
+          <button class="logout-btn">Log Out</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <main class="main-content dashboard-content">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+          <h1 class="welcome-title">Welcome to E-TELLY</h1>
+          <p class="welcome-subtitle">Disaster preparedness and community resource sharing</p>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard-cards" id="dashboardCards">
+          <!-- Card for everyone -->
+          <div class="dashboard-card">
+            <div class="card-icon">📋</div>
+            <h3 class="card-title">My Profile</h3>
+            <p class="card-description">View and update your personal information and account settings.</p>
+          </div>
+
+          <!-- Card for everyone -->
+          <div class="dashboard-card">
+            <div class="card-icon">📊</div>
+            <h3 class="card-title">Reports</h3>
+            <p class="card-description">View disaster reports and community updates in your area.</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="js/navbar.js"></script>
+    <script>
+      // Add admin-only features if user is admin
+      async function initDashboard() {
+        const user = await loadUserInfo();
+        if (user && user.role === "admin") {
+          // Dynamically add User Management card for admins only
+          const cardsContainer = document.getElementById("dashboardCards");
+          const adminCard = document.createElement("a");
+          adminCard.href = "ums.html";
+          adminCard.className = "card-link";
+          adminCard.innerHTML = `
+            <div class="dashboard-card">
+              <div class="card-icon" style="background: #dbeafe;">👥</div>
+              <h3 class="card-title">User Management</h3>
+              <p class="card-description">Manage system users, create accounts, and assign roles.</p>
+            </div>
+          `;
+          cardsContainer.appendChild(adminCard);
+        }
+      }
+      
+      initDashboard();
+    </script>
+  </body>
+</html>
