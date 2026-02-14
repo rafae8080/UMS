@@ -29,11 +29,9 @@ body {
   z-index: 1;
 }
 
-/* If you have the actual image, uncomment this:
 .background-image {
-    background-image: url('images/navotas.jpg');
+  background-image: url("../assets/navotas.jpg");
 }
-*/
 
 .background-overlay {
   position: absolute;
@@ -263,30 +261,11 @@ body {
   margin-bottom: 16px;
 }
 
-.logo-circle {
+.logo-placeholder img {
   width: 148px;
   height: 160px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
+  object-fit: contain;
 }
-
-.logo-text {
-  font-size: 48px;
-  font-weight: 700;
-  color: white;
-}
-
-/* If you have the actual logo image, use this instead:
-.logo-placeholder img {
-    width: 148px;
-    height: 160px;
-    object-fit: contain;
-}
-*/
 
 .brand-title {
   font-size: 28px;
